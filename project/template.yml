@@ -117,6 +117,9 @@ Resources:
       RoleArn: !GetAtt EDAPipeRole.Arn
       Source: !GetAtt Source.Arn
       SourceParameters:
+        FilterCriteria:
+          Filters:
+            - Pattern: '{"data":{"Type":["EDA"]}}'
         KinesisStreamParameters:
           StartingPosition: LATEST
           BatchSize: 1
