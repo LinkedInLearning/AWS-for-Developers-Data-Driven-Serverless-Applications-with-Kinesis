@@ -15,6 +15,9 @@ Resources:
             Stream: !GetAtt Source.Arn
             StartingPosition: TRIM_HORIZON
             BatchSize: 1
+            FilterCriteria:
+              Filters:
+                - Pattern: '{"data": {"Type": ["pass"] }}'
 
   Source:
     Type: AWS::Kinesis::Stream
