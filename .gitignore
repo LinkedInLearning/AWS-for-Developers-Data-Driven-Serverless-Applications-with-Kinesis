@@ -3,3 +3,4 @@ node_modules
 .tmp
 npm-debug.log
 project/samconfig.toml
+.vscode/settings.json

@@ -8,6 +8,13 @@ Resources:
       CodeUri: src/
       Handler: app.handler
       Runtime: nodejs18.x
+      Events:
+        KinesisEvent:
+          Type: Kinesis
+          Properties:
+            Stream: !GetAtt Source.Arn
+            StartingPosition: TRIM_HORIZON
+            BatchSize: 1
 
   Source:
     Type: AWS::Kinesis::Stream
