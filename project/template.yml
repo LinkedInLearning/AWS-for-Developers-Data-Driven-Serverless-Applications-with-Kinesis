@@ -19,6 +19,23 @@ Resources:
               Filters:
                 - Pattern: '{"data": {"Type": ["analytics"] }}'
 
+  EDAFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: src/
+      Handler: edaFunction.handler
+      Runtime: nodejs18.x
+      Events:
+        KinesisEvent:
+          Type: Kinesis
+          Properties:
+            StartingPosition: TRIM_HORIZON
+            Stream: !GetAtt Source.Arn
+            BatchSize: 1
+            FilterCriteria:
+              Filters:
+                - Pattern: '{"data": {"Type": ["EDA"] }}'
+
   Source:
     Type: AWS::Kinesis::Stream
     Properties:
