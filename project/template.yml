@@ -8,3 +8,10 @@ Resources:
       CodeUri: src/
       Handler: app.handler
       Runtime: nodejs18.x
+
+  Source:
+    Type: AWS::Kinesis::Stream
+    Properties:
+      Name: !Sub ${AWS::StackName}-source
+      StreamModeDetails:
+        StreamMode: ON_DEMAND
