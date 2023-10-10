@@ -1,0 +1,8 @@
+[
+	{
+		"EventBusName": "sam-linkedin-project-eda-bus",
+		"Source": "app",
+		"DetailType": "A",
+		"Detail": "{ \"key1\": \"value1\", \"key2\": \"value2\" }"
+	}
+]
