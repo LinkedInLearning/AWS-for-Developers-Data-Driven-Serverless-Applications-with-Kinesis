@@ -108,3 +108,50 @@ Resources:
             }
           ]
         }
+
+  # EDA EventBridge Pipe
+  EDAPipe:
+    Type: AWS::Pipes::Pipe
+    Properties:
+      Name: !Sub ${AWS::StackName}-eda-pipe
+      RoleArn: !GetAtt EDAPipeRole.Arn
+      Source: !GetAtt Source.Arn
+      SourceParameters:
+        FilterCriteria:
+          Filters:
+            - Pattern: '{"data":{"Type":["EDA"]}}'
+        KinesisStreamParameters:
+          StartingPosition: LATEST
+          BatchSize: 1
+      Target: !GetAtt MyEventBus.Arn
+
+  EDAPipeRole:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+        Version: 2012-10-17
+        Statement:
+          - Effect: Allow
+            Principal:
+              Service:
+                - pipes.amazonaws.com
+            Action:
+              - sts:AssumeRole
+      Policies:
+        - PolicyName: SourcePolicy
+          PolicyDocument:
+            Statement:
+              - Effect: Allow
+                Action:
+                  - kinesis:DescribeStream
+                  - kinesis:DescribeStreamSummary
+                  - kinesis:GetRecords
+                  - kinesis:GetShardIterator
+                Resource: !GetAtt Source.Arn
+        - PolicyName: TargetPolicy
+          PolicyDocument:
+            Statement:
+              - Effect: Allow
+                Action:
+                  - events:PutEvents
+                Resource: !GetAtt MyEventBus.Arn
