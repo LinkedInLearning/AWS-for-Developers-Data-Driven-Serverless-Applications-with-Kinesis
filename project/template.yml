@@ -109,6 +109,14 @@ Resources:
           ]
         }
 
+  # Enrichment function for the EDA pipe
+  EnrichmentEDAFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: src/
+      Handler: enrichmentEDA.handler
+      Runtime: nodejs18.x
+
   # EDA EventBridge Pipe
   EDAPipe:
     Type: AWS::Pipes::Pipe
@@ -124,6 +132,9 @@ Resources:
           StartingPosition: LATEST
           BatchSize: 1
       Target: !GetAtt MyEventBus.Arn
+      Enrichment: !GetAtt EnrichmentEDAFunction.Arn
+      EnrichmentParameters:
+        InputTemplate: '{ "data": <$.data> }'
 
   EDAPipeRole:
     Type: AWS::IAM::Role
@@ -155,6 +166,13 @@ Resources:
                 Action:
                   - events:PutEvents
                 Resource: !GetAtt MyEventBus.Arn
+        - PolicyName: EnrichmentPolicy
+          PolicyDocument:
+            Statement:
+              - Effect: Allow
+                Action:
+                  - 'lambda:InvokeFunction'
+                Resource: !GetAtt EnrichmentEDAFunction.Arn
 
   DestinationStream:
     Type: AWS::Kinesis::Stream
