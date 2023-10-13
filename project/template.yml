@@ -163,6 +163,14 @@ Resources:
       StreamModeDetails:
         StreamMode: ON_DEMAND
 
+  # Enrichment function for the analytics pipe
+  EnrichmentAnalyticsFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: src/
+      Handler: enrichmentAnalytics.handler
+      Runtime: nodejs18.x
+
   # Analytics EventBridge Pipe
   AnalyticsPipe:
     Type: AWS::Pipes::Pipe
@@ -181,6 +189,9 @@ Resources:
       TargetParameters:
         KinesisStreamParameters:
           PartitionKey: '$.partitionKey'
+      Enrichment: !GetAtt EnrichmentAnalyticsFunction.Arn
+      EnrichmentParameters:
+        InputTemplate: '{ "partitionKey": <$.partitionKey>, "data": <$.data> }'
 
   AnalyticsPipePipeRole:
     Type: AWS::IAM::Role
@@ -213,6 +224,13 @@ Resources:
                   - 'kinesis:PutRecord'
                   - 'kinesis:PutRecords'
                 Resource: !GetAtt DestinationStream.Arn
+        - PolicyName: EnrichmentPolicy
+          PolicyDocument:
+            Statement:
+              - Effect: Allow
+                Action:
+                  - 'lambda:InvokeFunction'
+                Resource: !GetAtt EnrichmentAnalyticsFunction.Arn
 
   # Firehose S3 bucket
   AnalyticsDestinationBucket:
@@ -240,7 +258,7 @@ Resources:
           Enabled: true
           LogGroupName: !Sub ${AWS::StackName}-deliverystream-loggroup
           LogStreamName: 'DeliveryStreamS3Delivery'
-        CompressionFormat: 'GZIP'
+        CompressionFormat: 'UNCOMPRESSED'
         EncryptionConfiguration:
           NoEncryptionConfig: 'NoEncryption'
         Prefix: ''
