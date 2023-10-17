@@ -240,7 +240,7 @@ Resources:
           Enabled: true
           LogGroupName: !Sub ${AWS::StackName}-deliverystream-loggroup
           LogStreamName: 'DeliveryStreamS3Delivery'
-        CompressionFormat: 'GZIP'
+        CompressionFormat: 'UNCOMPRESSED'
         EncryptionConfiguration:
           NoEncryptionConfig: 'NoEncryption'
         Prefix: ''
