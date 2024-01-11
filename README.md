@@ -2,6 +2,10 @@
 
 This is the repository for the LinkedIn Learning course AWS for Developers: Data-Driven Serverless Applications with Kinesis. The full course is available from [LinkedIn Learning][lil-course-url].
 
+![lil-thumbnail-url]
+
+Data-driven applications have their application flow governed by the data, and the serverless framework can serve as the web framework to create this kind of application. In this course, join instructor Marcia Villalba as she takes you through an overview of serverless applications and Kinesis, an AWS serverless service. Learn how to design an event-driven application, integrate AWS Lambda and Kinesis streams, set up necessary permissions, and more. Along the way, discover how to leverage Amazon EventBridge and Kinesis Firehose. Be sure to test out your new skills as you progress through the course in the practice challenges at the end of each section.
+
 _See the readme file in the main branch for updated instructions and information._
 
 ## Instructions
@@ -34,8 +38,8 @@ Commit changes using this command: git commit -m "some message"
 2. Clone this repository into your local machine using the terminal (Mac), CMD (Windows), or a GUI tool like SourceTree.
 
 [0]: # 'Replace these placeholder URLs with actual course URLs'
-[lil-course-url]: https://www.linkedin.com/learning/
-[lil-thumbnail-url]: http://
+[lil-course-url]: https://www.linkedin.com/learning/aws-for-developers-data-driven-serverless-applications-with-kinesis-23377054
+[lil-thumbnail-url]: https://media.licdn.com/dms/image/D560DAQFBkIyU-lZySw/learning-public-crop_675_1200/0/1704755693464?e=2147483647&v=beta&t=YbHOfCYePdMd9cbh_R9lnyw89TkP7Dlqm6cCsR-5w20
 
 ## Instructor
 
